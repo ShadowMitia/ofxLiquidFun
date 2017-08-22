@@ -606,7 +606,7 @@ void b2World::Solve(const b2TimeStep& step)
 		}
 
 		b2Profile profile;
-		island.Solve(&profile, step, m_gravity, m_allowSleep);
+		island.Solve(&profile, step, m_gravity, m_allowSleep); // alex
 		m_profile.solveInit += profile.solveInit;
 		m_profile.solveVelocity += profile.solveVelocity;
 		m_profile.solvePosition += profile.solvePosition;

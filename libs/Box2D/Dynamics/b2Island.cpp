@@ -203,7 +203,11 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 		if (b->m_type == b2_dynamicBody)
 		{
 			// Integrate velocities.
-			v += h * (b->m_gravityScale * gravity + b->m_invMass * b->m_force);
+            if (b->GetPosition().x > 82) {
+                v += h * (b->m_invMass * b->m_force);
+            }else{
+			v += h * (b->m_gravityScale * gravity + b->m_invMass * b->m_force); //alex
+            }
 			w += h * b->m_invI * b->m_torque;
 
 			// Apply damping.

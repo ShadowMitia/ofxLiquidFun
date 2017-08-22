@@ -34,6 +34,15 @@ public:
 	const b2ContactImpulse* impulse;
 };
 
+class ofxBox2dPreContactArgs : public ofEventArgs {
+public:
+
+	b2Fixture * a;
+	b2Fixture * b;
+	const b2Manifold* oldManifold;
+};
+
+
 class ofxBox2d : public b2ContactListener {
 	
 private:
@@ -57,6 +66,15 @@ private:
 		args.a = contact->GetFixtureA();
 		args.b = contact->GetFixtureB();
 		ofNotifyEvent( contactEndEvents, args, this);
+	}
+
+	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+	{
+		static ofxBox2dPreContactArgs args;
+		args.a = contact->GetFixtureA();
+		args.b = contact->GetFixtureB();
+		args.oldManifold = oldManifold;
+		ofNotifyEvent(PreSolveEvents, args, this);
 	}
 
 	void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
@@ -101,6 +119,7 @@ public:
 	ofEvent <ofxBox2dContactArgs> contactStartEvents;
 	ofEvent <ofxBox2dContactArgs> contactEndEvents;
 	ofEvent <ofxBox2dPostContactArgs> PostSolveEvents;
+	ofEvent <ofxBox2dPreContactArgs>  PreSolveEvents;
 
 	
 	// ------------------------------------------------------ 
