@@ -3110,12 +3110,16 @@ void b2ParticleSystem::LimitVelocity(const b2TimeStep& step)
 	}
 }
 
-void b2ParticleSystem::SolveGravity(const b2TimeStep& step)
+void b2ParticleSystem::SolveGravity(const b2TimeStep& step) // alex
 {
+
 	b2Vec2 gravity = step.dt * m_def.gravityScale * m_world->GetGravity();
 	for (int32 i = 0; i < m_count; i++)
 	{
-		m_velocityBuffer.data[i] += gravity;
+        if (m_positionBuffer.data[i].x < 82) {
+            m_velocityBuffer.data[i] += gravity;
+        }
+		
 	}
 }
 
