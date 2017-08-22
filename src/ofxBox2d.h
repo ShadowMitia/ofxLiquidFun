@@ -17,11 +17,21 @@
 #define OF_MAX_TOUCH_JOINTS		5			// max number of touch points on iPhone + iPad (this may change in the future though).
 #endif
 
+#define CUSTOM_BOX2D_TIM
+
 class ofxBox2dContactArgs : public ofEventArgs {
 public:
 	
 	b2Fixture * a;
 	b2Fixture * b;
+};
+
+class ofxBox2dPostContactArgs : public ofEventArgs {
+public:
+
+	b2Fixture * a;
+	b2Fixture * b;
+	const b2ContactImpulse* impulse;
 };
 
 class ofxBox2d : public b2ContactListener {
@@ -47,6 +57,15 @@ private:
 		args.a = contact->GetFixtureA();
 		args.b = contact->GetFixtureB();
 		ofNotifyEvent( contactEndEvents, args, this);
+	}
+
+	void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
+	{
+		static ofxBox2dPostContactArgs args;
+		args.a = contact->GetFixtureA();
+		args.b = contact->GetFixtureB();
+		args.impulse = impulse;
+		ofNotifyEvent(PostSolveEvents, args, this);
 	}
 	
     ofPoint				gravity;
@@ -81,6 +100,8 @@ public:
     void disableEvents();
 	ofEvent <ofxBox2dContactArgs> contactStartEvents;
 	ofEvent <ofxBox2dContactArgs> contactEndEvents;
+	ofEvent <ofxBox2dPostContactArgs> PostSolveEvents;
+
 	
 	// ------------------------------------------------------ 
 	ofxBox2d();
