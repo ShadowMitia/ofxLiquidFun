@@ -465,7 +465,6 @@ void b2ContactSolver::SolveVelocityConstraints()
 				if (x.x >= 0.0f && x.y >= 0.0f)
 				{
 					// Get the incremental impulse
-                    //printf("<<<<<<<1\n");
 					b2Vec2 d = x - a;
 
 					// Apply incremental impulse
@@ -508,7 +507,6 @@ void b2ContactSolver::SolveVelocityConstraints()
 
 				if (x.x >= 0.0f && vn2 >= 0.0f)
 				{
-                    printf("<<<<<<<2\n");
 					// Get the incremental impulse
 					b2Vec2 d = x - a;
 
