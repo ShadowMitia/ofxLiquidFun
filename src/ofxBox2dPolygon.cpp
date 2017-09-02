@@ -180,6 +180,7 @@ void ofxBox2dPolygon::create(b2World * b2dworld) {
         fixture.density		= density;
         fixture.restitution = bounce;
         fixture.friction	= friction;
+        
         body->CreateFixture(&fixture);
     
         
