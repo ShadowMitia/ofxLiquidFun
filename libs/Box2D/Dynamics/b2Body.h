@@ -388,6 +388,9 @@ public:
 
 	/// Dump this body to a log file
 	void Dump();
+    
+    float32 GetInvMass();
+    float32 m_mass, m_invMass;
 
 #if LIQUIDFUN_EXTERNAL_LANGUAGE_API
 public:
@@ -474,7 +477,7 @@ private:
 	b2JointEdge* m_jointList;
 	b2ContactEdge* m_contactList;
 
-	float32 m_mass, m_invMass;
+	
 
 	// Rotational inertia about the center of mass.
 	float32 m_I, m_invI;
@@ -888,6 +891,11 @@ inline void b2BodyDef::SetPosition(float32 positionX, float32 positionY)
 inline void b2Body::SetTransform(float32 positionX, float32 positionY, float32 angle)
 {
 	SetTransform(b2Vec2(positionX, positionY), angle);
+}
+
+inline float32 b2Body::GetInvMass()
+{
+    return m_invMass;
 }
 #endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API
 
