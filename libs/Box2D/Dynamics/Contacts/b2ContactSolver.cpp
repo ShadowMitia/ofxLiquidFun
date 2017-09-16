@@ -18,7 +18,6 @@
 */
 
 #include <Box2D/Dynamics/Contacts/b2ContactSolver.h>
-
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include <Box2D/Dynamics/b2Body.h>
 #include <Box2D/Dynamics/b2Fixture.h>
@@ -41,7 +40,6 @@ struct b2ContactPositionConstraint
 	float32 radiusA, radiusB;
 	int32 pointCount;
 };
-
 b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def)
 {
 	m_step = def->step;
@@ -128,13 +126,11 @@ b2ContactSolver::b2ContactSolver(b2ContactSolverDef* def)
 		}
 	}
 }
-
 b2ContactSolver::~b2ContactSolver()
 {
 	m_allocator->Free(m_velocityConstraints);
 	m_allocator->Free(m_positionConstraints);
 }
-
 // Initialize position dependent portions of the velocity constraints.
 void b2ContactSolver::InitializeVelocityConstraints()
 {
@@ -246,7 +242,6 @@ void b2ContactSolver::InitializeVelocityConstraints()
 		}
 	}
 }
-
 void b2ContactSolver::WarmStart()
 {
 	// Warm start.
@@ -286,7 +281,6 @@ void b2ContactSolver::WarmStart()
 		m_velocities[indexB].w = wB;
 	}
 }
-
 void b2ContactSolver::SolveVelocityConstraints()
 {
 	for (int32 i = 0; i < m_count; ++i)
@@ -305,42 +299,61 @@ void b2ContactSolver::SolveVelocityConstraints()
 		float32 wA = m_velocities[indexA].w;
 		b2Vec2 vB = m_velocities[indexB].v;
 		float32 wB = m_velocities[indexB].w;
+        b2Vec2 vec2alex = vB;
+        float32 wAlex = wB;
 
 		b2Vec2 normal = vc->normal;
 		b2Vec2 tangent = b2Cross(normal, 1.0f);
 		float32 friction = vc->friction;
+        //printf("friction = %f\n", friction);
+        //friction = 1.0f;
 
 		b2Assert(pointCount == 1 || pointCount == 2);
 
 		// Solve tangent constraints first because non-penetration is more important
-		// than friction.
+		// than  .
+        
+        /*
 		for (int32 j = 0; j < pointCount; ++j)
 		{
+            //printf("pointCount = %i\n", j);
 			b2VelocityConstraintPoint* vcp = vc->points + j;
 
 			// Relative velocity at contact
 			b2Vec2 dv = vB + b2Cross(wB, vcp->rB) - vA - b2Cross(wA, vcp->rA);
-
 			// Compute tangent force
 			float32 vt = b2Dot(dv, tangent) - vc->tangentSpeed;
-			float32 lambda = vcp->tangentMass * (-vt);
+            float32 lambda = vcp->tangentMass * (-vt);
 
 			// b2Clamp the accumulated force
 			float32 maxFriction = friction * vcp->normalImpulse;
-			float32 newImpulse = b2Clamp(vcp->tangentImpulse + lambda, -maxFriction, maxFriction);
+            float32 newImpulse = b2Clamp(vcp->tangentImpulse + lambda, -maxFriction, maxFriction);
 			lambda = newImpulse - vcp->tangentImpulse;
 			vcp->tangentImpulse = newImpulse;
+            if (dv.x != 0 && false) {
+                printf("normal.x = %f, normal.y = %f\n",normal.x, normal.y);
+                printf("dv.x = %f, dv.y = %f\n",dv.x, dv.y);
+                printf("tang.x = %f, tang.y = %f\n",tangent.x, tangent.y);
+                printf("normalImpulse = %f \n",vcp->normalImpulse);
+                printf("tangentImpulse = %f \n",vcp->tangentImpulse);
+                printf("tangentMass = %f \n",vcp->tangentMass);
+            }
 
+            
 			// Apply contact impulse
 			b2Vec2 P = lambda * tangent;
 
+            
 			vA -= mA * P;
 			wA -= iA * b2Cross(vcp->rA, P);
 
 			vB += mB * P;
 			wB += iB * b2Cross(vcp->rB, P);
-		}
-
+             
+         
+            
+		}*/
+        
 		// Solve normal constraints
 		if (vc->pointCount == 1)
 		{
@@ -360,11 +373,22 @@ void b2ContactSolver::SolveVelocityConstraints()
 
 			// Apply contact impulse
 			b2Vec2 P = lambda * normal;
+            /*
+            if (vB.x!=0) {
+                printf("/Partie - 2\n");
+                printf("vitesse avant, vB.x = %f, P.x = %f\n",vB.x, wB);
+            }*/
 			vA -= mA * P;
 			wA -= iA * b2Cross(vcp->rA, P);
 
 			vB += mB * P;
 			wB += iB * b2Cross(vcp->rB, P);
+            /*if (vB.x !=0) {
+                printf("vitesse apres, vB.x = %f, P.y = %f \n",vB.x, wB);
+                
+            }*/
+
+
 		}
 		else
 		{
@@ -585,16 +609,22 @@ void b2ContactSolver::SolveVelocityConstraints()
 
 				// No solution, give up. This is hit sometimes, but it doesn't seem to matter.
 				break;
+                
 			}
 		}
-
+        /*
+        if (vB!=vec2alex && wB!=wAlex) {
+            printf(" resultat: dif(vB.x) %f,dif(vB.y) %f, dif(vB.w) %f\n", vB.x-vec2alex.x,vB.y-vec2alex.y,wB-wAlex);
+        }*/
+        
+        
 		m_velocities[indexA].v = vA;
 		m_velocities[indexA].w = wA;
 		m_velocities[indexB].v = vB;
 		m_velocities[indexB].w = wB;
+        
 	}
 }
-
 void b2ContactSolver::StoreImpulses()
 {
 	for (int32 i = 0; i < m_count; ++i)
@@ -609,7 +639,6 @@ void b2ContactSolver::StoreImpulses()
 		}
 	}
 }
-
 struct b2PositionSolverManifold
 {
 	void Initialize(b2ContactPositionConstraint* pc, const b2Transform& xfA, const b2Transform& xfB, int32 index)
@@ -669,7 +698,6 @@ struct b2PositionSolverManifold
 	b2Vec2 point;
 	float32 separation;
 };
-
 // Sequential solver.
 bool b2ContactSolver::SolvePositionConstraints()
 {
@@ -748,7 +776,6 @@ bool b2ContactSolver::SolvePositionConstraints()
 	// push the separation above -b2_linearSlop.
 	return minSeparation >= -3.0f * b2_linearSlop;
 }
-
 // Sequential position solver for position constraints.
 bool b2ContactSolver::SolveTOIPositionConstraints(int32 toiIndexA, int32 toiIndexB)
 {
