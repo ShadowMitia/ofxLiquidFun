@@ -206,7 +206,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
             if (b->GetPosition().x > 82) {
                 v += h * (b->m_invMass * b->m_force);
             }else{
-			v += h * (b->m_gravityScale * gravity + b->m_invMass * b->m_force); //alex
+                v += h * (b->m_gravityScale * gravity + b->m_invMass * b->m_force); //alex
             }
             //v -= 0.10*v; // alex modif frotemment
 			w += h * b->m_invI * b->m_torque;

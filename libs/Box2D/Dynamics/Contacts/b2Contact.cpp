@@ -104,7 +104,6 @@ void b2Contact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 
 	b2Fixture* fixtureA = contact->m_fixtureA;
 	b2Fixture* fixtureB = contact->m_fixtureB;
-
 	if (contact->m_manifold.pointCount > 0 &&
 		fixtureA->IsSensor() == false &&
 		fixtureB->IsSensor() == false)
@@ -112,6 +111,9 @@ void b2Contact::Destroy(b2Contact* contact, b2BlockAllocator* allocator)
 		fixtureA->GetBody()->SetAwake(true);
 		fixtureB->GetBody()->SetAwake(true);
 	}
+    if (fixtureA->IsSensor() == true || fixtureB->IsSensor() == true){
+    }
+
 
 	b2Shape::Type typeA = fixtureA->GetType();
 	b2Shape::Type typeB = fixtureB->GetType();
@@ -176,7 +178,6 @@ void b2Contact::Update(b2ContactListener* listener)
 	b2Body* bodyB = m_fixtureB->GetBody();
 	const b2Transform& xfA = bodyA->GetTransform();
 	const b2Transform& xfB = bodyB->GetTransform();
-
 	// Is this contact a sensor?
 	if (sensor)
 	{

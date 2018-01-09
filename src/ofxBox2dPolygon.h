@@ -6,7 +6,7 @@
 
 class ofxBox2dPolygon : public ofxBox2dBaseShape, public ofPolyline {
 
-private:
+protected:
 	
 	bool	bIsSimplified;
 	bool    bIsTriangulated;
@@ -53,5 +53,4 @@ public:
 	//----------------------------------------
 	void create(b2World * b2dworld);
 	void draw();
-	
 };

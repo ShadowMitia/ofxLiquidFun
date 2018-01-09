@@ -123,52 +123,52 @@ void ofxBox2dPolygon::makeConvexPoly() {
 
 //----------------------------------------
 void ofxBox2dPolygon::create(b2World * b2dworld) {
-
-	if(size() <= 3) {
-		ofLog(OF_LOG_NOTICE, "need at least 3 points: %i\n", (int)size());
-		return;	
-	}
-	
-	if (body != NULL) {
-		b2dworld->DestroyBody(body);
-		body = NULL;
-	}
-	
-	// create the body from the world (1)
-	b2BodyDef		bd;
-	bd.type			= density <= 0.0 ? b2_staticBody : b2_dynamicBody;
-	body			= b2dworld->CreateBody(&bd);
-
-	if(bIsTriangulated) {
-		
-		b2PolygonShape	shape;
-		b2FixtureDef	fixture;
-		b2Vec2			verts[3];
-		
-		ofVec2f a, b, c;
-		for (int i=0; i<triangles.size(); i++) {
-			
-			a = triangles[i].a;
-			b = triangles[i].b;
-			c = triangles[i].c;
-
-			verts[0].Set(a.x/OFX_BOX2D_SCALE, a.y/OFX_BOX2D_SCALE);
-			verts[1].Set(b.x/OFX_BOX2D_SCALE, b.y/OFX_BOX2D_SCALE);
-			verts[2].Set(c.x/OFX_BOX2D_SCALE, c.y/OFX_BOX2D_SCALE);
-			
-			shape.Set(verts, 3);
-			
-			fixture.density		= density;
-			fixture.restitution = bounce;
-			fixture.friction	= friction;
-			fixture.shape		= &shape;
-			body->CreateFixture(&fixture);
-		}
-	
-	}
-	else {
+    if(size() <= 3) {
+        ofLog(OF_LOG_NOTICE, "need at least 3 points: %i\n", (int)size());
+        return;
+    }
+    
+    if (body != NULL) {
+        b2dworld->DestroyBody(body);
+        body = NULL;
+    }
+    
+    // create the body from the world (1)
+    b2BodyDef		bd;
+    bd.type			= density <= 0.0 ? b2_staticBody : b2_dynamicBody;
+    body			= b2dworld->CreateBody(&bd);
+    
+    
+    if(bIsTriangulated) {
+        
+        b2PolygonShape	shape;
+        b2FixtureDef	fixture;
+        b2Vec2			verts[3];
+        
+        ofVec2f a, b, c;
+        for (int i=0; i<triangles.size(); i++) {
+            
+            a = triangles[i].a;
+            b = triangles[i].b;
+            c = triangles[i].c;
+            
+            verts[0].Set(a.x/OFX_BOX2D_SCALE, a.y/OFX_BOX2D_SCALE);
+            verts[1].Set(b.x/OFX_BOX2D_SCALE, b.y/OFX_BOX2D_SCALE);
+            verts[2].Set(c.x/OFX_BOX2D_SCALE, c.y/OFX_BOX2D_SCALE);
+            
+            shape.Set(verts, 3);
+            
+            fixture.density		= density;
+            fixture.restitution = bounce;
+            fixture.friction	= friction;
+            fixture.shape		= &shape;
+            body->CreateFixture(&fixture);
+        }
+        
+    }
+    else {
         makeConvexPoly();
-		vector<ofPoint> pts = ofPolyline::getVertices();
+        vector<ofPoint> pts = ofPolyline::getVertices();
         vector<b2Vec2>verts;
         for (int i=0; i<MIN((int)pts.size(), b2_maxPolygonVertices); i++) {
             verts.push_back(screenPtToWorldPt(pts[i]));
@@ -181,7 +181,7 @@ void ofxBox2dPolygon::create(b2World * b2dworld) {
         fixture.restitution = bounce;
         fixture.friction	= friction;
         body->CreateFixture(&fixture);
-    
+        
         
     }
     
@@ -196,7 +196,7 @@ void ofxBox2dPolygon::create(b2World * b2dworld) {
     }
     mesh = path.getTessellation();
     mesh.setUsage(GL_STATIC_DRAW);
-
+    
     flagHasChanged();
     alive = true;
 }

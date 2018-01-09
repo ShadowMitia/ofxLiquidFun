@@ -65,6 +65,7 @@ struct b2FixtureDef
 		restitution = 0.0f;
 		density = 0.0f;
 		isSensor = false;
+        id =0;
 	}
 
 	/// The shape, this must be set. The shape will be cloned, so you
@@ -89,6 +90,9 @@ struct b2FixtureDef
 
 	/// Contact filtering data.
 	b2Filter filter;
+    
+    // idFixture
+    int id;
 };
 
 /// This proxy is used internally to connect fixtures to the broad-phase.
@@ -108,6 +112,10 @@ struct b2FixtureProxy
 class b2Fixture
 {
 public:
+    
+    // idFixture
+    int id;
+    
 	/// Get the type of the child shape. You can use this to down cast to the concrete shape.
 	/// @return the shape type.
 	b2Shape::Type GetType() const;

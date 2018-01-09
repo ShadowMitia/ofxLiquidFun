@@ -274,9 +274,6 @@ void ofxBox2dBaseShape::addRepulsionForce(ofVec2f pt, float radius, float amt) {
 		}
 	}
 }
-
-
-
 //------------------------------------------------
 void ofxBox2dBaseShape::update() { }
 void ofxBox2dBaseShape::draw() { }

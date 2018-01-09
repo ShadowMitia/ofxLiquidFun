@@ -110,7 +110,6 @@ b2Body* b2World::CreateBody(const b2BodyDef* def)
 	}
 	m_bodyList = b;
 	++m_bodyCount;
-
 	return b;
 }
 
