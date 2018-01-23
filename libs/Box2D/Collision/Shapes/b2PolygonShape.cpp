@@ -64,6 +64,7 @@ void b2PolygonShape::SetAsBox(float32 hx, float32 hy, const b2Vec2& center, floa
 	{
 		m_vertices[i] = b2Mul(xf, m_vertices[i]);
 		m_normals[i] = b2Mul(xf.q, m_normals[i]);
+        
 	}
 }
 

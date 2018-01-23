@@ -21,7 +21,8 @@
 
 class ofxBox2dContactArgs : public ofEventArgs {
 public:
-	
+    
+    b2Contact *contact;
 	b2Fixture * a;
 	b2Fixture * b;
 };
@@ -29,6 +30,7 @@ public:
 class ofxBox2dPostContactArgs : public ofEventArgs {
 public:
 
+    b2Contact *contact;
 	b2Fixture * a;
 	b2Fixture * b;
 	const b2ContactImpulse* impulse;
@@ -36,7 +38,7 @@ public:
 
 class ofxBox2dPreContactArgs : public ofEventArgs {
 public:
-
+    b2Contact *contact;
 	b2Fixture * a;
 	b2Fixture * b;
 	const b2Manifold* oldManifold;
@@ -55,6 +57,7 @@ private:
 	// Called when two fixtures begin to touch.
 	void BeginContact(b2Contact* contact) { 
 		static ofxBox2dContactArgs args;
+        args.contact = contact;
 		args.a = contact->GetFixtureA();
 		args.b = contact->GetFixtureB();
 		ofNotifyEvent( contactStartEvents, args, this);
@@ -63,6 +66,7 @@ private:
 	// Called when two fixtures cease to touch.
 	void EndContact(b2Contact* contact) { 
 		static ofxBox2dContactArgs args;
+        args.contact = contact;
 		args.a = contact->GetFixtureA();
 		args.b = contact->GetFixtureB();
 		ofNotifyEvent( contactEndEvents, args, this);
@@ -71,6 +75,7 @@ private:
 	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 	{
 		static ofxBox2dPreContactArgs args;
+        args.contact = contact;
 		args.a = contact->GetFixtureA();
 		args.b = contact->GetFixtureB();
 		args.oldManifold = oldManifold;
@@ -80,6 +85,7 @@ private:
 	void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
 	{
 		static ofxBox2dPostContactArgs args;
+        args.contact = contact;
 		args.a = contact->GetFixtureA();
 		args.b = contact->GetFixtureB();
 		args.impulse = impulse;
