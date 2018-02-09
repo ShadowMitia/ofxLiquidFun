@@ -14,10 +14,11 @@ protected:
 	ofVec2f center;
 	void    calculateCentroid();
 	float   calculateArea();
-    void    makeConvexPoly();
+
 
 public:
-	
+    void    makeConvexPoly();
+
 	ofVboMesh				mesh;
 	ofRectangle				bounds;
 	vector <TriangleShape>	triangles;
