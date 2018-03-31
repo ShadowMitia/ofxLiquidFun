@@ -313,7 +313,7 @@ void b2ContactSolver::SolveVelocityConstraints()
 		// Solve tangent constraints first because non-penetration is more important
 		// than  .
         
-        /*
+        
 		for (int32 j = 0; j < pointCount; ++j)
 		{
             //printf("pointCount = %i\n", j);
@@ -352,7 +352,7 @@ void b2ContactSolver::SolveVelocityConstraints()
              
          
             
-		}*/
+		}
         
 		// Solve normal constraints
 		if (vc->pointCount == 1)
