@@ -205,6 +205,7 @@ void b2Island::Solve(b2Profile* profile, const b2TimeStep& step, const b2Vec2& g
 			// Integrate velocities.
             if (b->GetPosition().x > 856/30) {
                 v += h * (b->m_invMass * b->m_force);
+                v -= 0.10*v;
             }else{
                 v += h * (b->m_gravityScale * gravity + b->m_invMass * b->m_force); //alex
             }
